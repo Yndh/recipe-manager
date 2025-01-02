@@ -1,19 +1,25 @@
 import express from "express";
 import mongoose from "mongoose";
+import {Request, Response} from "express";
+import recipeRoutes from "./routes/recipeRoutes";
 
 const app = express();
+const MONGO_URI = 'mongodb://localhost:27017/RecipeManager'
+const PORT: number = 3000
 
-const MONGO_URI = 'mongodb://localhost:27017/RedcipeManager'
+mongoose
+    .connect(MONGO_URI)
+    .then(() => console.log("MongoDB Connected"))
+    .catch((err: Error) => { console.log(`Failed to connect to MongoDB (${err})`) });
 
-const main = async() => {
-    try{
-        await mongoose.connect(MONGO_URI);
-        console.log("Connected to MongoDB");
+app.use(express.json());
 
-    }catch(err){
-        console.log(`Error connecting to MongoDB: ${err}`);
-        process.exit(1);
-    }
-}
+app.use("/", recipeRoutes)
 
-main()
+app.use((req: Request, res: Response) => {
+    res.status(404).json({error: "Endpoint not found"});
+})
+
+app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+})

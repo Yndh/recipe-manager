@@ -1,5 +1,46 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=WebStorm
+### GET all recipies
+GET http://localhost:3000/
 
-###
+### GET recipie by id
+GET http://localhost:3000/6776b36fee692b3a8d0d5f86
+
+### POST create new recipie
+POST http://localhost:3000/
+Content-Type: application/json
+
+{
+  "name": "Hamburg",
+  "ingredients": [
+    "500g mielonego mięsa wołowego",
+    "1 cebula, drobno posiekana",
+    "1 jajko",
+    "2 łyżki bułki tartej",
+    "Sól do smaku",
+    "Pieprz do smaku",
+    "4 bułki do burgerów",
+    "Sałata",
+    "Plastry pomidora",
+    "Plastry sera"
+  ],
+  "instructions": [
+    "1. W misce wymieszaj mielone mięso, posiekaną cebulę, jajko, bułkę tartą, sól i pieprz.",
+    "2. Uformuj z masy 4 równe kotlety.",
+    "3. Rozgrzej patelnię lub grill na średnim ogniu i smaż kotlety przez około 4-5 minut z każdej strony, aż osiągną pożądaną konsystencję.",
+    "4. W międzyczasie opiecz bułki do burgerów na osobnej patelni lub w piekarniku.",
+    "5. Złóż burgery: połóż kotlet na dolnej części bułki, a następnie dodaj plaster sera, pomidora, sałatę i przykryj górną częścią bułki.",
+    "6. Podawaj na gorąco i ciesz się smakiem!"
+  ],
+  "rating": 5
+}
+
+### PUT update recipe
+PUT http://localhost:3000/6776c2c91b516d0b5461cdef
+Content-Type: application/json
+
+{
+    "name": "Burgir",
+  "rating": 4.5
+}
+
+### DELETE delete recipe
+DELETE http://localhost:3000/6776c2c91b516d0b5461cdef
