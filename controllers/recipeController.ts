@@ -1,14 +1,64 @@
 import {Request, Response} from "express";
 import Recipe from "../models/recipe";
+import {equal} from "node:assert";
 
 export const getRecipies = async (req: Request, res: Response) => {
     try{
-        const recepies = await Recipe.find()
+        const recipies = await Recipe.find()
+        if(!recipies) return res.status(404).send("No recipies found")
 
-        res.json(recepies)
+        res.status(200).json(recipies)
     }catch(err){
         console.error(`getRecipies error: ${err}`)
         res.status(500).json({error: "Error getting recipes"})
+    }
+}
+
+export const getRecipiesByRating = async (req: Request, res: Response) => {
+    try{
+        const {rating} = req.params
+
+        const recipies = await Recipe.find({rating: rating})
+        if(!recipies) return res.status(404).send("No recipies found")
+
+        res.status(200).json(recipies)
+
+
+    }catch(err){
+        console.error(`getRecipiesByRating error: ${err}`)
+        res.status(500).json({error: "Error getting recipies"})
+    }
+}
+
+export const getRecipiesByRatingGTE = async (req: Request, res: Response) => {
+    try{
+        const {rating} = req.params
+
+        const recipies = await Recipe.find({rating: {$gte: rating}})
+        if(!recipies) return res.status(404).send("No recipies found")
+
+        res.status(200).json(recipies)
+
+
+    }catch(err){
+        console.error(`getRecipiesByRating error: ${err}`)
+        res.status(500).json({error: "Error getting recipies"})
+    }
+}
+
+export const getRecipiesByRatingLTE = async (req: Request, res: Response) => {
+    try{
+        const {rating} = req.params
+
+        const recipies = await Recipe.find({rating: {$lte: rating}})
+        if(!recipies) return res.status(404).send("No recipies found")
+
+        res.status(200).json(recipies)
+
+
+    }catch(err){
+        console.error(`getRecipiesByRating error: ${err}`)
+        res.status(500).json({error: "Error getting recipies"})
     }
 }
 
@@ -29,6 +79,7 @@ export const getRecipeById = async (req: Request, res: Response) => {
 export const createRecipe = async (req: Request, res: Response) => {
     try{
         console.log(req.body)
+
         let { name, ingredients, instructions, rating} = req.body
 
         if(!name || !ingredients || ingredients.length < 1 || !instructions || instructions.length < 1 || !rating) return res.status(400).json({error: "Invalid input data"})

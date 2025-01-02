@@ -1,11 +1,20 @@
 ### GET all recipies
-GET http://localhost:3000/
+GET http://localhost:3000/recipes
+
+### GET all recipies by rating
+GET http://localhost:3000/recipes/rating/5
+
+### GET all recipies by rating greater or egual
+GET http://localhost:3000/recipes/rating/gte/3
+
+### GET all recipies by rating lower or egual
+GET http://localhost:3000/recipes/rating/lte/4
 
 ### GET recipie by id
-GET http://localhost:3000/6776b36fee692b3a8d0d5f86
+GET http://localhost:3000/recipes/6776b36fee692b3a8d0d5f86
 
 ### POST create new recipie
-POST http://localhost:3000/
+POST http://localhost:3000/recipes
 Content-Type: application/json
 
 {
@@ -34,7 +43,7 @@ Content-Type: application/json
 }
 
 ### PUT update recipe
-PUT http://localhost:3000/6776c2c91b516d0b5461cdef
+PUT http://localhost:3000/recipes/6776c2c91b516d0b5461cdef
 Content-Type: application/json
 
 {
@@ -43,4 +52,4 @@ Content-Type: application/json
 }
 
 ### DELETE delete recipe
-DELETE http://localhost:3000/6776c2c91b516d0b5461cdef
+DELETE http://localhost:3000/recipes/6776c2c91b516d0b5461cdef
