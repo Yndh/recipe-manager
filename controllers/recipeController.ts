@@ -69,6 +69,33 @@ export const getRecipesByIngredientCount = async (req: Request, res: Response) =
     }
 };
 
+export const getRecipesByInstructionsCount = async (req: Request, res: Response) => {
+    try {
+        let {count} = req.params
+        const {gte, lte } = req.query;
+
+        count = parseInt(count);
+        if (isNaN(count)) {
+            return res.status(400).json({ error: "Invalid count" });
+        }
+
+        let query: any = { instructions: { $size: +count } };
+        if (gte) query = { $expr: { $gte: [{ $size: "$instructions" }, count] } };
+        if (lte) query = { $expr: { $lte: [{ $size: "$instructions" }, count] } };
+
+        const recipes = await Recipe.aggregate([{$match: query}]);
+
+        if (!recipes || recipes.length === 0) {
+            return res.status(404).send("No recipes found");
+        }
+
+        res.status(200).json(recipes);
+    } catch (err) {
+        console.error(`getRecipesByInstructionsCount error: ${err}`);
+        res.status(500).json({ error: "Error getting recipes" });
+    }
+};
+
 export const getRecipeById = async (req: Request, res: Response) => {
     try{
         const {id} = req.params
