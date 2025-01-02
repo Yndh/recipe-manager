@@ -5,7 +5,7 @@ import {
     createRecipe,
     updateRecipe,
     deleteRecipe,
-    getRecipiesByRating, getRecipiesByRatingGTE, getRecipiesByRatingLTE
+    getRecipiesByRating, getRecipesByIngredientCount
 } from "../controllers/recipeController";
 
 const router = express.Router();
@@ -17,8 +17,8 @@ router.put("/:id", updateRecipe)
 router.delete("/:id", deleteRecipe)
 
 router.get("/rating/:rating", getRecipiesByRating)
-router.get("/rating/gte/:rating", getRecipiesByRatingGTE)
-router.get("/rating/lte/:rating", getRecipiesByRatingLTE)
+
+router.get("/ingredients/:count", getRecipesByIngredientCount)
 
 
 export default router;

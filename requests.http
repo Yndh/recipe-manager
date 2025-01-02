@@ -1,14 +1,23 @@
-### GET all recipies
+### GET all recipes
 GET http://localhost:3000/recipes
 
-### GET all recipies by rating
+### GET all recipes by rating
 GET http://localhost:3000/recipes/rating/5
 
-### GET all recipies by rating greater or egual
-GET http://localhost:3000/recipes/rating/gte/3
+### GET all recipes by rating greater or egual
+GET http://localhost:3000/recipes/rating/4?gte=true
 
-### GET all recipies by rating lower or egual
-GET http://localhost:3000/recipes/rating/lte/4
+### GET all recipes by rating lower or egual
+GET http://localhost:3000/recipes/rating/4?lte=true
+
+### GET all recipes by ingredients count
+GET http://localhost:3000/recipes/ingredients/4
+
+### GET all recipes by ingredients count greater or egual
+GET http://localhost:3000/recipes/ingredients/4?gte=true
+
+### GET all recipes by ingredients count lower or egual
+GET http://localhost:3000/recipes/ingredients/4?lte=true
 
 ### GET recipie by id
 GET http://localhost:3000/recipes/6776b36fee692b3a8d0d5f86

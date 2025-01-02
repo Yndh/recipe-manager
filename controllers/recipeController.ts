@@ -15,9 +15,22 @@ export const getRecipies = async (req: Request, res: Response) => {
 
 export const getRecipiesByRating = async (req: Request, res: Response) => {
     try{
-        const {rating} = req.params
+        let {rating} = req.params
+        const {gte, lte} = req.query
 
-        const recipies = await Recipe.find({rating: rating})
+        rating = parseInt(rating);
+        if (isNaN(rating)) {
+            return res.status(400).json({ error: "Invalid rating" });
+        }
+        if(rating > 5){
+            return res.status(400).json({error: "Max rating is 5"})
+        }
+
+        let query = { rating: rating }
+        if(gte) query = { rating: { $gte: rating } }
+        if(lte) query = { rating: { $lte: rating } }
+
+        const recipies = await Recipe.find(query)
         if(!recipies) return res.status(404).send("No recipies found")
 
         res.status(200).json(recipies)
@@ -29,37 +42,32 @@ export const getRecipiesByRating = async (req: Request, res: Response) => {
     }
 }
 
-export const getRecipiesByRatingGTE = async (req: Request, res: Response) => {
-    try{
-        const {rating} = req.params
+export const getRecipesByIngredientCount = async (req: Request, res: Response) => {
+    try {
+        let {count} = req.params
+        const {gte, lte } = req.query;
 
-        const recipies = await Recipe.find({rating: {$gte: rating}})
-        if(!recipies) return res.status(404).send("No recipies found")
+        count = parseInt(count);
+        if (isNaN(count)) {
+            return res.status(400).json({ error: "Invalid count" });
+        }
 
-        res.status(200).json(recipies)
+        let query: any = { ingredients: { $size: +count } };
+        if (gte) query = { $expr: { $gte: [{ $size: "$ingredients" }, count] } };
+        if (lte) query = { $expr: { $lte: [{ $size: "$ingredients" }, count] } };
 
+        const recipes = await Recipe.aggregate([{$match: query}]);
 
-    }catch(err){
-        console.error(`getRecipiesByRating error: ${err}`)
-        res.status(500).json({error: "Error getting recipies"})
+        if (!recipes || recipes.length === 0) {
+            return res.status(404).send("No recipes found");
+        }
+
+        res.status(200).json(recipes);
+    } catch (err) {
+        console.error(`getRecipesByIngredientCount error: ${err}`);
+        res.status(500).json({ error: "Error getting recipes" });
     }
-}
-
-export const getRecipiesByRatingLTE = async (req: Request, res: Response) => {
-    try{
-        const {rating} = req.params
-
-        const recipies = await Recipe.find({rating: {$lte: rating}})
-        if(!recipies) return res.status(404).send("No recipies found")
-
-        res.status(200).json(recipies)
-
-
-    }catch(err){
-        console.error(`getRecipiesByRating error: ${err}`)
-        res.status(500).json({error: "Error getting recipies"})
-    }
-}
+};
 
 export const getRecipeById = async (req: Request, res: Response) => {
     try{
@@ -85,14 +93,9 @@ export const createRecipe = async (req: Request, res: Response) => {
 
             if(!name || !ingredients || ingredients.length < 1 || !instructions || instructions.length < 1 || !rating) return res.status(400).json({error: "Invalid input data"})
 
-            if(typeof rating !== "number"){
-                try{
-                    rating = parseInt(rating)
-                    if(rating.isNaN()) return res.status(400).json({error: "Invalid rating"})
-                }catch(err){
-                    console.error(`createRecipe error: ${err}`)
-                    return res.status(400).json({error: "Invalid rating"})
-                }
+            rating = parseInt(rating);
+            if (isNaN(rating)) {
+                return res.status(400).json({ error: "Invalid rating" });
             }
             if(rating > 5){
                 return res.status(400).json({error: "Max rating is 5"})
@@ -118,14 +121,9 @@ export const updateRecipe = async (req: Request, res: Response) => {
         const recipe = await Recipe.findById(id)
         if (!recipe) return res.status(404).json({error: "Recipe not found"})
 
-        if(rating && typeof rating !== "number"){
-            try{
-                rating = parseInt(rating)
-                if(rating.isNaN()) return res.status(400).json({error: "Invalid rating"})
-            }catch(err){
-                console.error(`createRecipe error: ${err}`)
-                return res.status(400).json({error: "Invalid rating"})
-            }
+        rating = parseInt(rating);
+        if (isNaN(rating)) {
+            return res.status(400).json({ error: "Invalid rating" });
         }
         if(rating > 5){
             return res.status(400).json({error: "Max rating is 5"})
