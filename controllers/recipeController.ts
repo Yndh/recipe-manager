@@ -1,6 +1,5 @@
 import {Request, Response} from "express";
 import Recipe from "../models/recipe";
-import {equal} from "node:assert";
 
 export const getRecipies = async (req: Request, res: Response) => {
     try{
@@ -78,29 +77,33 @@ export const getRecipeById = async (req: Request, res: Response) => {
 
 export const createRecipe = async (req: Request, res: Response) => {
     try{
-        console.log(req.body)
+        const recipes = Array.isArray(req.body) ? req.body : [req.body]
 
-        let { name, ingredients, instructions, rating} = req.body
+        const createdRecipes = []
+        for(let data of recipes){
+            let { name, ingredients, instructions, rating} = data
 
-        if(!name || !ingredients || ingredients.length < 1 || !instructions || instructions.length < 1 || !rating) return res.status(400).json({error: "Invalid input data"})
+            if(!name || !ingredients || ingredients.length < 1 || !instructions || instructions.length < 1 || !rating) return res.status(400).json({error: "Invalid input data"})
 
-        if(typeof rating !== "number"){
-            try{
-                rating = parseInt(rating)
-                if(typeof rating !== "number") return res.status(400).json({error: "Invalid input data"})
-            }catch(err){
-                console.error(`createRecipe error: ${err}`)
-                return res.status(400).json({error: "Invalid input data"})
+            if(typeof rating !== "number"){
+                try{
+                    rating = parseInt(rating)
+                    if(rating.isNaN()) return res.status(400).json({error: "Invalid rating"})
+                }catch(err){
+                    console.error(`createRecipe error: ${err}`)
+                    return res.status(400).json({error: "Invalid rating"})
+                }
             }
-        }
-        if(rating > 5){
-            return res.status(400).json({error: "Max rating is 5"})
-        }
-        name = name.trim()
+            if(rating > 5){
+                return res.status(400).json({error: "Max rating is 5"})
+            }
+            name = name.trim()
 
-        const newRecipe = await Recipe.create({name, ingredients, instructions, rating})
+            const newRecipe = await Recipe.create({name, ingredients, instructions, rating})
+            createdRecipes.push(newRecipe)
+        }
 
-        res.status(200).json(newRecipe)
+        res.status(200).json(createdRecipes.length === 1 ? createdRecipes[0] : createdRecipes);
     }catch(err){
         console.error(`createRecipe error: ${err}`)
         res.status(500).json({error: "Error creating recipe"})
@@ -118,10 +121,10 @@ export const updateRecipe = async (req: Request, res: Response) => {
         if(rating && typeof rating !== "number"){
             try{
                 rating = parseInt(rating)
-                if(typeof rating !== "number") return res.status(400).json({error: "Invalid input data"})
+                if(rating.isNaN()) return res.status(400).json({error: "Invalid rating"})
             }catch(err){
                 console.error(`createRecipe error: ${err}`)
-                return res.status(400).json({error: "Invalid input data"})
+                return res.status(400).json({error: "Invalid rating"})
             }
         }
         if(rating > 5){

@@ -32,15 +32,169 @@ Content-Type: application/json
     "Plastry sera"
   ],
   "instructions": [
-    "1. W misce wymieszaj mielone mięso, posiekaną cebulę, jajko, bułkę tartą, sól i pieprz.",
-    "2. Uformuj z masy 4 równe kotlety.",
-    "3. Rozgrzej patelnię lub grill na średnim ogniu i smaż kotlety przez około 4-5 minut z każdej strony, aż osiągną pożądaną konsystencję.",
-    "4. W międzyczasie opiecz bułki do burgerów na osobnej patelni lub w piekarniku.",
-    "5. Złóż burgery: połóż kotlet na dolnej części bułki, a następnie dodaj plaster sera, pomidora, sałatę i przykryj górną częścią bułki.",
-    "6. Podawaj na gorąco i ciesz się smakiem!"
+    "W misce wymieszaj mielone mięso, posiekaną cebulę, jajko, bułkę tartą, sól i pieprz.",
+    "Uformuj z masy 4 równe kotlety.",
+    "Rozgrzej patelnię lub grill na średnim ogniu i smaż kotlety przez około 4-5 minut z każdej strony, aż osiągną pożądaną konsystencję.",
+    "W międzyczasie opiecz bułki do burgerów na osobnej patelni lub w piekarniku.",
+    "Złóż burgery: połóż kotlet na dolnej części bułki, a następnie dodaj plaster sera, pomidora, sałatę i przykryj górną częścią bułki.",
+    "Podawaj na gorąco i ciesz się smakiem!"
   ],
   "rating": 5
 }
+
+### POST create multiple new recipies
+POST http://localhost:3000/recipes
+Content-Type: application/json
+
+[
+  {
+    "name": "Spaghetti Bolognese",
+    "ingredients": [
+      "spaghetti",
+      "mielona wołowina",
+      "cebula",
+      "czosnek",
+      "passata pomidorowa",
+      "przyprawy"
+    ],
+    "instructions": [
+      "Gotuj spaghetti zgodnie z instrukcjami na opakowaniu.",
+      "Na patelni podsmaż cebulę i czosnek.",
+      "Dodaj mieloną wołowinę i smaż do zarumienienia.",
+      "Dodaj passata pomidorowa, sól, pieprz, oregano i gotuj przez 15 minut.",
+      "Podawaj bolognese z ugotowanym spaghetti."
+    ],
+    "rating": 4.8
+  },
+  {
+    "name": "Kawa mrożona",
+    "ingredients": [
+      "kawa",
+      "mleko",
+      "cukier",
+      "lód"
+    ],
+    "instructions": [
+      "Zaparz mocną kawę.",
+      "Schłódź kawę w lodówce.",
+      "Dodaj cukier do kawy, mieszaj, aż się rozpuści.",
+      "Wlej kawę do szklanki, dodaj lód i zalej mlekiem."
+    ],
+    "rating": 4.2
+  },
+  {
+    "name": "Zupa pomidorowa",
+    "ingredients": [
+      "pomidory",
+      "cebula",
+      "czosnek",
+      "bulion warzywny",
+      "śmietana",
+      "bazylia"
+    ],
+    "instructions": [
+      "Podsmaż cebulę i czosnek na oliwie.",
+      "Dodaj pomidory i gotuj przez 10 minut.",
+      "Zalej bulionem i gotuj przez kolejne 20 minut.",
+      "Zblenduj zupę, dodaj śmietanę i bazylię.",
+      "Podawaj na gorąco."
+    ],
+    "rating": 4.5
+  },
+  {
+    "name": "Sałatka grecka",
+    "ingredients": [
+      "ogórek",
+      "pomidor",
+      "cebula",
+      "oliwki",
+      "feta",
+      "oliwa z oliwek",
+      "oregano"
+    ],
+    "instructions": [
+      "Pokrój ogórek, pomidora i cebulę.",
+      "Dodaj oliwki i pokrojoną fetę.",
+      "Wymieszaj składniki z oliwą z oliwek i oregano."
+    ],
+    "rating": 3.8
+  },
+  {
+    "name": "Omlet z warzywami",
+    "ingredients": [
+      "jajka",
+      "papryka",
+      "szpinak",
+      "cebula",
+      "ser",
+      "przyprawy"
+    ],
+    "instructions": [
+      "Roztrzep jajka i dodaj pokrojone warzywa.",
+      "Wlej mieszankę na patelnię i smaż na małym ogniu.",
+      "Po 5 minutach dodaj ser na wierzch i smaż przez kolejne 2 minuty."
+    ],
+    "rating": 4
+  },
+  {
+    "name": "Chili con carne",
+    "ingredients": [
+      "mielona wołowina",
+      "papryka",
+      "cebula",
+      "czosnek",
+      "fasola czerwona",
+      "pomidory",
+      "chili",
+      "przyprawy"
+    ],
+    "instructions": [
+      "Smaż mieloną wołowinę z cebulą i czosnkiem.",
+      "Dodaj pokrojoną paprykę, fasolę i pomidory.",
+      "Gotuj przez 30 minut, aż wszystkie składniki się połączą.",
+      "Dopraw chili i przyprawami."
+    ],
+    "rating": 4.1
+  },
+  {
+    "name": "Kurczak w curry",
+    "ingredients": [
+      "pierś z kurczaka",
+      "mleko kokosowe",
+      "curry",
+      "czosnek",
+      "imbir",
+      "cebula",
+      "ryż"
+    ],
+    "instructions": [
+      "Pokrój kurczaka i podsmaż go na patelni.",
+      "Dodaj cebulę, czosnek i imbir, smaż przez 2 minuty.",
+      "Wlej mleko kokosowe i curry, gotuj przez 10 minut.",
+      "Podawaj z ryżem."
+    ],
+    "rating": 4.7
+  },
+  {
+    "name": "Tiramisu",
+    "ingredients": [
+      "biszkopty",
+      "mascarpone",
+      "kawa",
+      "cukier",
+      "kakao",
+      "jajka"
+    ],
+    "instructions": [
+      "Zaparz kawę i zanurz w niej biszkopty.",
+      "Wymieszaj mascarpone z cukrem i jajkami.",
+      "Ułóż biszkopty w naczyniu, pokryj masą mascarpone.",
+      "Powtórz warstwy i posyp kakao.",
+      "Schłodź przez 2 godziny przed podaniem."
+    ],
+    "rating": 3.9
+  }
+]
 
 ### PUT update recipe
 PUT http://localhost:3000/recipes/6776c2c91b516d0b5461cdef
